@@ -1,13 +1,13 @@
 package seedu.addressbook.data.person;
 
-public class AddressStreet {
+public class AddressUnit {
 	private final String value;
 	
-	private AddressStreet (String value) {
+	private AddressUnit (String value) {
 		this.value = value;
 	}
 	
-	public String getValue () {
+	public String getValue() {
 		return this.value;
 	}
 }

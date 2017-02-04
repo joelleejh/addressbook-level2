@@ -3,7 +3,7 @@ package seedu.addressbook.data.person;
 public class AddressBlock {
 	private final String value; 
 	
-	public AddressBlock (String value) {
+	private AddressBlock (String value) {
 		this.value = value;
 	}
 	
