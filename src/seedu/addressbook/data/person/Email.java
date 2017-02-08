@@ -59,6 +59,7 @@ public class Email implements Printable {
         return isPrivate;
     }
     
+    @Override 
     public String getPrintableString() {
     	return "Email Address: " + this.value;
     }
