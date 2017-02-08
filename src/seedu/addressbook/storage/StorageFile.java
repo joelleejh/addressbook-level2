@@ -1,5 +1,6 @@
 package seedu.addressbook.storage;
 
+
 import seedu.addressbook.data.AddressBook;
 import seedu.addressbook.data.exception.IllegalValueException;
 import seedu.addressbook.storage.jaxb.AdaptedAddressBook;
@@ -11,6 +12,7 @@ import javax.xml.bind.Unmarshaller;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
@@ -19,6 +21,7 @@ import java.io.Reader;
 import java.io.Writer;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.io.File;
 
 /**
  * Represents the file used to store address book data.
@@ -28,6 +31,8 @@ public class StorageFile {
     /** Default file path used if the user doesn't provide the file name. */
     public static final String DEFAULT_STORAGE_FILEPATH = "addressbook.xml";
 
+    public static final String STORAGE_FILE_NOT_FOUND = "Storage file is not found";
+    
     /* Note: Note the use of nested classes below.
      * More info https://docs.oracle.com/javase/tutorial/java/javaOO/nested.html
      */
@@ -87,15 +92,27 @@ public class StorageFile {
     }
 
     /**
+     * Returns true if the file exists.
+     */
+    
+    private boolean isFileExist() {
+    	File file = path.toFile();
+    	return file.exists();
+    }
+    
+    /**
      * Saves all data to this storage file.
      *
      * @throws StorageOperationException if there were errors converting and/or storing data to file.
      */
-    public void save(AddressBook addressBook) throws StorageOperationException {
+    public void save(AddressBook addressBook) throws StorageOperationException, FileNotFoundException {
 
         /* Note: Note the 'try with resource' statement below.
          * More info: https://docs.oracle.com/javase/tutorial/essential/exceptions/tryResourceClose.html
          */
+    	if (!isFileExist()) {
+    		throw new FileNotFoundException(String.format(STORAGE_FILE_NOT_FOUND, path));
+    	}
         try (final Writer fileWriter =
                      new BufferedWriter(new FileWriter(path.toFile()))) {
 
@@ -116,7 +133,10 @@ public class StorageFile {
      *
      * @throws StorageOperationException if there were errors reading and/or converting data from file.
      */
-    public AddressBook load() throws StorageOperationException {
+    public AddressBook load() throws StorageOperationException, FileNotFoundException {
+    	if (!isFileExist()) {
+    		throw new FileNotFoundException(String.format(STORAGE_FILE_NOT_FOUND, path));
+    	}
         try (final Reader fileReader =
                      new BufferedReader(new FileReader(path.toFile()))) {
 
