@@ -14,6 +14,8 @@ public class Person implements ReadOnlyPerson {
     private Phone phone;
     private Email email;
     private Address address;
+    private int sequenceNumber;
+    private static int nextSequenceNumber = 1;
 
     private final UniqueTagList tags;
     /**
@@ -25,6 +27,7 @@ public class Person implements ReadOnlyPerson {
         this.email = email;
         this.address = address;
         this.tags = new UniqueTagList(tags); // protect internal tags from changes in the arg list
+        this.sequenceNumber = nextSequenceNumber++;
     }
 
     /**
@@ -32,6 +35,10 @@ public class Person implements ReadOnlyPerson {
      */
     public Person(ReadOnlyPerson source) {
         this(source.getName(), source.getPhone(), source.getEmail(), source.getAddress(), source.getTags());
+    }
+    
+    public int getSequenceNumber() {
+    	return sequenceNumber;
     }
 
     @Override
@@ -76,7 +83,7 @@ public class Person implements ReadOnlyPerson {
     @Override
     public int hashCode() {
         // use this method for custom fields hashing instead of implementing your own
-        return Objects.hash(name, phone, email, address, tags);
+        return Objects.hash(name, phone, email, address, tags, sequenceNumber);
     }
 
     @Override
